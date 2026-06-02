@@ -1,42 +1,71 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <style>
-        body{background-color: lightgray  ;font-family: Arial; text-align: center;}
-        h1{color: darkblue; text-align: center;}
-        h2{color: purple;}
-        p{font-size: 18px;}
-        button{background-color: darkblue; color:white; padding: 12px 25px; border: none; font-size: 18px; border-radius: 8px; cursor: pointer;}
-        body{text-align: center;}
-    </style>
-<title> My First Website </title>
-</head>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Walker's First Website</title>
+        <style>
+            body{background-color: #d9d9d9; font-family: Arial; text-align: center;}
+            h1{color: darkblue; text-align: center;}
+            h2{color: purple;}
+            p{font-size: 18px;}
+            button{background-color: darkblue; color: yellowgreen; padding: 12px 25px; border: none; font-size: 18px; border-radius: 8px; cursor:pointer;}
+            .container {max-width: 800px; margin: auto; background-color: white; padding: 30px; border-radius: 10px;}
+            .skills {margin-top: 10px;}
+            .skill {display: inline-block; background-color: #f2f2f2; padding: 8px 15px; margin: 5px; border-radius: 20px; font-size: 14px;}
+            .projects {display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 15px; margin-bottom: 30px;}
+            .project-card {background: darkblue; color: yellowgreen; padding: 10px; border-radius: 10px; width: 220px; transition: transform 0.2s ease, box-shadow 0.2s ease;}
+            .project-card img {width: 100%; border-radius: 8px;}
+            .project-card:hover {transform: translate(-5px); box-shadow: 0 8px 18px rgba(0,0,0,0,15);}
+            nav {margin-bottom: 30px; padding: 15px; background: darkblue; border-radius: 10px;}
+            nav a {text-decoration: none; color: yellowgreen; margin: 0 15px; font-weight: bold;}
+            nav a:hover {color: purple;}
+            .hero {padding: 40px 20px; background: darkblue; border-radius: 10px; margin-bottom: 30px;}
+            .hero h1 {margin-bottom: 10px; color: yellowgreen;}
+            .hero p {margin: 10px 0; color: yellowgreen;}
+            html {scroll-behavior: smooth;}
+        </style>
+    </head>
 <body>
-    <h1> Walker Michael</h1>
-    <h2>I am Walker, I want to be an expert in Web design and coding</h2>
-    <p> Aspiring Web Developer</p>
+    <div class="container">
+        <nav>
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+        </nav>
+        <div class="hero">
+<h1>Walker Michael</h1>
+<p>Aspiring Web Developer</p>
+<p>I am learning web development and working towards building real software and applications.</p>
+        </div>
+<h2 id="about">About Me</h2>
+<p>Hello! My name is Walker. I recently started learning web development and I enjoy building websites.</p>
+<h2 id="skills">My Skills</h2>
+<div class="skills">
+    <span class="skill">HTML</span>
+    <span class="skill">CSS</span>
+    <span class="skill">Javascript</span>
+</div>
+    <h2 id="projects"></h2>My Projects</h2>
+<div class="projects">
+    <div class="project-card">
+        <img src="https://upload.wikimedia.org/wkipedia/commons/thumb/3/38/HTML5_Badge.svg/320px-HTML5_Badge.svg.png" alt="Project preview">
+        <h3>My First Website</h3>
+        <p>A simple portfolio website built with HTML, CSS and javascript</p>
+    </div>
+    <div class="project-card">
+        <img src="https://via.placeholder.com/300x180" alt="Project Preview">
+        <h3>Coming Soon</h3>
+        <p>More projects will appear as I continue learning</p>
+    </div>
+</div>
+<h2 id="contact">Contact</h2>
 
-    <h2>My Skills</h2>
-    
+    <button onclick="showMessage()">Contact Me👍</button>
+    </div>
+    <script> 
+    function showMessage() {
+        alert("Hello! Thanks for visiting my website") }</script>
 
-    
-    <ul>
-        <li>HTML</li>
-        <li>CSS</li>
-        <li>Javascript</li>
-        </ul>
-
-        <h2>My projects</h2>
-        <p>This is my first project</p>
-        
-        
-        
-        <button onclick="showMessage()">contact me 😎</button>
-        <script>
-            function showMessage() {
-                alert("Hello! Thanks for visiting Walker's Website😎");
-            }
-        </script>
-    
 </body>
 </html>
