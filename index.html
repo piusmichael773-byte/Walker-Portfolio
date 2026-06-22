@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Walker's First Website</title>
         <style>
@@ -9,7 +10,7 @@
             h2{color: purple;}
             p{font-size: 18px;}
             button{background-color: darkblue; color: yellowgreen; padding: 12px 25px; border: none; font-size: 18px; border-radius: 8px; cursor:pointer;}
-            .container {max-width: 800px; margin: auto; background-color: white; padding: 30px; border-radius: 10px;}
+            .container {max-width: 1000px; margin: auto; background-color: white; padding: 30px; border-radius: 10px;}
             .skills {margin-top: 10px;}
             .skill {display: inline-block; background-color: #f2f2f2; padding: 8px 15px; margin: 5px; border-radius: 20px; font-size: 14px;}
             .projects {display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 15px; margin-bottom: 30px;}
@@ -23,9 +24,17 @@
             .hero h1 {margin-bottom: 10px; color: yellowgreen;}
             .hero p {margin: 10px 0; color: yellowgreen;}
             html {scroll-behavior: smooth;}
+            @media (max-width: 600px) {
+                nav a {display:block; margin: 10px 0;}
+                .project-card {width: 100%;}
+                
+            }
+            .dark-mode {background-color: #1e1e1e; color: white;}
+                .dark-mode .container {background-color: #2a2a2a; color: white;}
         </style>
     </head>
 <body>
+    <h2 id="demo">Welcome to my website</h2>
     <div class="container">
         <nav>
         <a href="#about">About</a>
@@ -59,13 +68,106 @@
         <p>More projects will appear as I continue learning</p>
     </div>
 </div>
+
+<div id="carList"></div>
 <h2 id="contact">Contact</h2>
 
-    <button onclick="showMessage()">Contact Me👍</button>
+<h2> Car Inventory 🚘</h2>
+<input type="text" id="searchInput" placeholder="Search Cars" oninput="renderCars()">
+<input type = "text" id="makeInput" placeholder="Enter make">
+<input type = "text" id="modelInput" placeholder="Enter model">
+<input type = "number" id="yearInput" placeholder="Enter year">
+<button onclick="addCar()">Add Car</button>
+<div id="carList"></div> 
+
+    <button onclick="showMessage()">Contact Me👍</button> 
+    <button onclick="toggleDarkMode()">Dark Mode 🌙</button>
+    <button onclick="checkAgeLevel()">Age Level</button>
+    <button onclick="addFruit()">Add Fruit</button>
+    <div id ="list"></div>
     </div>
-    <script> 
+    
+    <script>
+    let cars = [];
+    let savedCars = localStorage.getItem("cars");
+    if (savedCars) {cars = JSON.parse(savedCars);}
+    let editingIndex = -1;
+    
+    
+    let isStyled = false;
+    let darkMode = false
+    let fruits = []
+    
+    
+    function addCar() {
+        let make = document.getElementById("makeInput").value;
+        let model = document.getElementById("modelInput").value; 
+        let year = document.getElementById("yearInput").value;
+        if (make === "" || model=== "" || year ==="") {
+        alert("PLease fill all fields");
+        return; }
+    
+let car = {make:make, model: model, year:year};
+if (editingIndex === -1) {cars.push(car);} else{cars[editingIndex] = car;editingIndex = -1;}
+let carList = document.getElementById("carList");
+carList.innerHTML="";
+for (let car of cars) {carList.innerHTML += "<p>" +car.make+ " " +car.model+ " (" +car.year+ ")</p>";} 
+renderCars(); saveCars();
+document.getElementById("makeInput").value="";
+document.getElementById("modelInput").value="";
+document.getElementById("yearInput").value="";}
+function renderCars() {
+    let carList = document.getElementById("carList");
+    carList.innerHTML = "";
+    let search= document.getElementById("searchInput").value.toLowerCase();
+    for (let i = 0; i < cars.length; i++) {let carText=
+        cars[i].make+ " "+
+        cars[i].model+" "+
+        cars[i].year;
+        if (carText.toLowerCase().includes(search)) {
+        carList.innerHTML += "<p>" + carText + "<span class='btns'>"+ "<button onclick ='editCar("+i+")'>Edit</button> " +"<button onclick ='deleteCar("+i+")'>Delete Car</button>"+ "</span></p>";
+    } } }
+    function editCar(index) {
+        document.getElementById("makeInput").value=cars[index].make;
+document.getElementById("modelInput").value=cars[index].model;
+document.getElementById("yearInput").value=cars[index].year;
+editingIndex = index;
+    }
+
+    function deleteCar(index) {cars.splice(index, 1); renderCars(); saveCars();}
+    function saveCars() {localStorage.setItem("cars", JSON.stringify(cars));}
+    renderCars();
+    
+    
     function showMessage() {
-        alert("Hello! Thanks for visiting my website") }</script>
+        document.getElementById("about").textContent="Hello Walker!!";
+        if (isStyled === false)
+        {document.getElementById("about").style.color="red";
+        document.getElementById("about").style.fontSize="40px";
+        document.getElementById("about").style.backgroundColor="yellow";
+        
+           } else {document.getElementById("about").style.color="purple";
+        document.getElementById("about").style.fontSize="24px";
+        document.getElementById("about").style.backgroundColor="";
+    } 
+    
+isStyled = !isStyled;}
+function toggleDarkMode() {document.body.classList.toggle("dark-mode");
+        
+    }
+    function checkAgeLevel() {let role = "viewer"; if (role === "admin" || role === "editor") {alert("Access granted");} else {alert ("Access denied")};}
+       function addFruit() {let input = document.getElementById("fruitInput");
+       let fruit = input.value;
+       fruits.push(fruit);
+       let list = document.getElementById("list");
+       list.innerHTML = "";
+       for (let item of fruits) {list.innerHTML += "<p>" + item + "</p>";}
+       input.value = "";
+
+}  
+
+
+           </script>
 
 </body>
 </html>
