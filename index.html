@@ -139,12 +139,14 @@ if (cars.length>0) {
     let newestYear = cars[0].year;
     for (let car of cars) {if (car.year>newestYear) {newestYear= car.year;}}
     document.getElementById("newestCar").textContent = "Newest Car: " +newestYear;
-}
-
-let oldestYear = cars[0].year;{
+    let oldestYear = cars[0].year;
 for (let car of cars) {if (car.year < oldestYear) {oldestYear=car.year}
+
+ 
 }
-document.getElementById("oldestCar").textContent = "Oldest Car: " + oldestYear; }
+document.getElementById("oldestCar").textContent = "Oldest Car: " + oldestYear; } else {document.getElementById("newestCar").textContent = "Newest Car: N/A";
+    document.getElementById("oldestCar").textContent = "Oldest Car: N/A";
+    document.getElementById("averageYear").textContent = "Average Year: N/A";} 
 
     let carList = document.getElementById("carList");
     carList.innerHTML = "";
