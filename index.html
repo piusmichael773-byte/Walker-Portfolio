@@ -31,6 +31,8 @@
             }
             .dark-mode {background-color: #1e1e1e; color: white;}
                 .dark-mode .container {background-color: #2a2a2a; color: white;}
+                .action-buttons {display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; margin-top: 20px; justify-content: center;}
+                .action-buttons button{padding: 8px 12px; border-radius: 6px; border: none; cursor: pointer;}
         </style>
     </head>
 <body>
@@ -69,7 +71,7 @@
     </div>
 </div>
 
-<div id="carList"></div>
+
 <h2 id="contact">Contact</h2>
 
 <h2> Car Inventory 🚘</h2>
@@ -78,12 +80,22 @@
 <input type = "text" id="modelInput" placeholder="Enter model">
 <input type = "number" id="yearInput" placeholder="Enter year">
 <button onclick="addCar()">Add Car</button>
-<div id="carList"></div> 
+<h3 id="carCount">Total Cars: 0</h3>
+<h3> Statistics📶</h3>
+<p id="newestCar">Newest Car: N/A</p>
+<p id="oldestCar">Oldest Car: N/A</p>
+<p id="averageYear">Average Year: N/A</p>
 
+<div id="carList"></div> 
+<div class="action-buttons">
     <button onclick="showMessage()">Contact Me👍</button> 
     <button onclick="toggleDarkMode()">Dark Mode 🌙</button>
     <button onclick="checkAgeLevel()">Age Level</button>
-    <button onclick="addFruit()">Add Fruit</button>
+    <button onclick="clearCars()">Clear All Cars</button>
+    <button onclick="sortCars()">Sort by Year</button>
+    <button onclick="exportCSV()">Export CSV</button>
+    </div>
+    
     <div id ="list"></div>
     </div>
     
@@ -96,13 +108,13 @@
     
     let isStyled = false;
     let darkMode = false
-    let fruits = []
+
     
     
     function addCar() {
         let make = document.getElementById("makeInput").value;
         let model = document.getElementById("modelInput").value; 
-        let year = document.getElementById("yearInput").value;
+        let year = Number(document.getElementById("yearInput").value);
         if (make === "" || model=== "" || year ==="") {
         alert("PLease fill all fields");
         return; }
@@ -116,7 +128,24 @@ renderCars(); saveCars();
 document.getElementById("makeInput").value="";
 document.getElementById("modelInput").value="";
 document.getElementById("yearInput").value="";}
-function renderCars() {
+function renderCars() {document.getElementById("carCount").textContent = "Total Cars:" + cars.length;
+if (cars.length>0) {
+    let totalYears= 0; 
+    for (let car of cars) {totalYears = totalYears + car.year;}
+    console.log(totalYears);
+    let averageYear = totalYears / cars.length;
+    averageYear = averageYear.toFixed(1);
+    document.getElementById("averageYear").textContent = "Average Year: " + averageYear;
+    let newestYear = cars[0].year;
+    for (let car of cars) {if (car.year>newestYear) {newestYear= car.year;}}
+    document.getElementById("newestCar").textContent = "Newest Car: " +newestYear;
+}
+
+let oldestYear = cars[0].year;{
+for (let car of cars) {if (car.year < oldestYear) {oldestYear=car.year}
+}
+document.getElementById("oldestCar").textContent = "Oldest Car: " + oldestYear; }
+
     let carList = document.getElementById("carList");
     carList.innerHTML = "";
     let search= document.getElementById("searchInput").value.toLowerCase();
@@ -125,7 +154,7 @@ function renderCars() {
         cars[i].model+" "+
         cars[i].year;
         if (carText.toLowerCase().includes(search)) {
-        carList.innerHTML += "<p>" + carText + "<span class='btns'>"+ "<button onclick ='editCar("+i+")'>Edit</button> " +"<button onclick ='deleteCar("+i+")'>Delete Car</button>"+ "</span></p>";
+        carList.innerHTML += "<div class='car-card'>" + "<h3>" + cars[i].make + " "+cars[i].model + "</h3>" + "<p>year:" + cars[i].year+ "</p>" +"<span class='btns'>"+ "<button onclick ='editCar("+i+")'>Edit</button> " +"<button onclick ='deleteCar("+i+")'>Delete Car</button>"+ "</span>" + "</div>";
     } } }
     function editCar(index) {
         document.getElementById("makeInput").value=cars[index].make;
@@ -137,6 +166,27 @@ editingIndex = index;
     function deleteCar(index) {cars.splice(index, 1); renderCars(); saveCars();}
     function saveCars() {localStorage.setItem("cars", JSON.stringify(cars));}
     renderCars();
+    function clearCars() {
+        if (confirm("Delete all cars?")) {cars=[]; saveCars(); renderCars();}
+    }
+    function sortCars() {
+        cars.sort(function(a,b) {return b.year - a.year;})
+        saveCars(); renderCars();
+    }
+    function exportCSV() {
+        let csv= "Make,Model,Year\n";
+        for (let car of cars) {csv += car.make + ", "+car.model + ", " +car.year + "\n";}
+        downloadCSV(csv);
+    }
+    function downloadCSV (csvContent) {
+        let blob = new Blob([csvContent], {type: "text/csv"});
+        let url = URL.createObjectURL(blob);
+        let a = document.createElement("a");
+        a.href = url;
+        a.download = "cars_inventory.csv";
+        a.click();
+        URL.revokeObjectURL(url);
+    }
     
     
     function showMessage() {
